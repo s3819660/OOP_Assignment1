@@ -305,10 +305,10 @@ public class ItemList {
 
     public static void borrowItem(Scanner scanner) {
         System.out.println("Enter member ID: ");
-        int memID = scanner.nextInt();
+        int memID = Verification.IDVerify(scanner, MemberList.getMemberListSize());
 
         System.out.println("Enter item ID: ");
-        int itemID = scanner.nextInt();
+        int itemID = Verification.IDVerify(scanner, itemList.size());
 
         switch (itemList.get(itemID).getStatus()) {
             case "available":

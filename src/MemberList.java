@@ -16,6 +16,10 @@ public class MemberList {
     public MemberList() {
     }
 
+    public static int getMemberListSize() {
+        return memberList.size();
+    }
+
     public static void registerMember(Scanner scanner) {
         String[] inputs = new String[6];
         String[] prompts = {"name", "phone", "email", "address", "expire date in the form of dd/MM/yyyy", "status"};
@@ -125,6 +129,7 @@ public class MemberList {
                 // calculate numbers of days between borrow and return date
                 int days = (int) (ChronoUnit.DAYS.between(localDate2, localDate1));
                 System.out.println(days);
+                System.out.println(type);
                 switch (type) {
                     case "Book":
                         if (days > 14) {

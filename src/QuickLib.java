@@ -17,7 +17,7 @@ public class QuickLib {
         edition = scanner.nextLine();
 
         System.out.println("Enter ISBN: ");
-        ISBN = scanner.nextLine();
+        ISBN = Verification.ISBNVerify(scanner);
 
         return new Book(ID, "Book", itemField[0], itemField[1], itemField[2], itemField[3], itemField[4],
                 Integer.parseInt(itemField[5]), authors, edition, ISBN);
@@ -29,7 +29,7 @@ public class QuickLib {
         String[] itemField = Item.inputItem();
 
         System.out.println("Enter ISSN: ");
-        ISSN = scanner.nextLine();
+        ISSN = Verification.ISSNVerify(scanner);
 
         return new Journal(ID, "Journal", itemField[0], itemField[1], itemField[2], itemField[3],
                 itemField[4], Integer.parseInt(itemField[5]), ISSN);
