@@ -27,21 +27,21 @@ A member has full name, ID (a driver’s license number or a passport number), p
 # 2. FEATURES
 
 ## The main functions of this simple applications are listed below:
-1. Search items by keywords: Perform a search Item by keywords, it could be the keyword from any field of the item list
-1. Add new item: Add new item to the list, can only be Book, Journal, and DVD
-1. Update item info: Updating existing Item information, select the item ID to update it
-1. Search members by keywords: Perform a search Member by keywords, it could be the keyword from any field of the member list 
-1. Register new member: Register new member to the list
-1. Update member info: Update current information of existing Member in the list, member can extend their expire date
-1. Borrow items: Perform a borrow for a Member, only items which is in stock can be borrowed.
-1. Return items: Return a borrowed item for a Member, if the return date is late, it will automatically calculate late fee for Member and add to their record.
-1. Save data: Save all existing information
-1. Quit: Save all existing information and exit program
+1. **Search items by keywords:** Perform a search Item by keywords, it could be the keyword from any field of the item list
+1. **Add new item:** Add new item to the list, can only be Book, Journal, and DVD
+1. **Update item info:** Updating existing Item information, select the item ID to update it
+1. **Search members by keywords:** Perform a search Member by keywords, it could be the keyword from any field of the member list 
+1. **Register new member:** Register new member to the list
+1. **Update member info:** Update current information of existing Member in the list, member can extend their expire date
+1. **Borrow items:** Perform a borrow for a Member, only items which is in stock can be borrowed.
+1. **Return items:** Return a borrowed item for a Member, if the return date is late, it will automatically calculate late fee for Member and add to their record.
+1. **Save data:** Save all existing information
+1. **Quit:** Save all existing information and exit program
 
 ## Additional feature:
- - Validation of entries upon input the data to the program: Entries such as year, ISBN, ISSN is validated accordingly, wrong input will prompt user to input again
- - Pagination: View 10 items/members per page, press n to next page, p to previous page
- - Press enter to exit to menu: User press Enter to go back to menu rather than the application automatically back to menu after completing a task
+ - **Validation of entries upon input the data to the program:** Entries such as year, ISBN, ISSN is validated accordingly, wrong input will prompt user to input again
+ - **Pagination:** View 10 items/members per page, press n to next page, p to previous page
+ - **Press enter to exit to menu:** User press Enter to go back to menu rather than the application automatically back to menu after completing a task
 
 # 3. DESIGN
 - Each item object is a book/journal/DVD with multiple copies
