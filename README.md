@@ -44,6 +44,7 @@ A member has full name, ID (a driver’s license number or a passport number), p
  - **Press enter to exit to menu:** User press Enter to go back to menu rather than the application automatically back to menu after completing a task
 
 # 3. DESIGN
+- Serialization was implemented
 - Each item object is a book/journal/DVD with multiple copies
 - Item object is the super class of Book, DVD, Journal class
 - Member object also stored the borrow information: Borrow Items and Borrow date
