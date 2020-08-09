@@ -1,11 +1,19 @@
 RMIT University Vietnam
-  Course: INTE2512 Object-Oriented Programming
-  Semester: 2020B
-  Assessment: Assignment 1
-  Author: Nguyen Phuoc Nhu Phuc
-  ID: s3819660
-  Created  date: 28/07/2020
-  Last modified: 09/08/2020 
+
+Course: INTE2512 Object-Oriented Programming
+
+Semester: 2020B
+
+Assessment: Assignment 1
+
+Author: Nguyen Phuoc Nhu Phuc
+  
+ID: s3819660
+  
+Created  date: 28/07/2020
+  
+Last modified: 09/08/2020 
+  
 
 1. INTRODUCTION
 QuickLib is an applicant which interacts with its user in this case the librarians by Command Line Interface.
