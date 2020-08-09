@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Paging {
-    static int pageEntries = 2;
+    static int pageEntries = 10;
 
     public static void printMemberList(Scanner scanner, ArrayList<Member> list) {
         ArrayList<ArrayList<Member>> listPages = new ArrayList<>();

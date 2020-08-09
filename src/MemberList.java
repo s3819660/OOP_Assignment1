@@ -213,8 +213,6 @@ public class MemberList {
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Save file does not exit, create new file");
         }
-
-        Paging.printMemberListPage(memberList);
     }
 
     public static void saveMember() {

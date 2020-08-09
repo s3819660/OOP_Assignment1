@@ -245,11 +245,7 @@ public class ItemList {
             ois.close();
             fis.close();
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Save file does not exit, create new file");
-        }
-
-        for (Item item : itemList) {
-            System.out.println(item);
+            System.out.println("Save incomplete. File does not exit, please create new file.");
         }
     }
 
