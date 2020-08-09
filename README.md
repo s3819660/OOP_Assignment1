@@ -19,7 +19,7 @@ Last modified: 09/08/2020
 
 QuickLib is an applicant which interacts with its user in this case the librarians by Command Line Interface.
 The application is implemented to manage library items and members. An item can either be a book, a journal or a DVD.
-A book has a title, authors, edition, publication, year, ISBN (13 or 10 digits), language, subject, and status (available or on loan)
+A book has a title, authors, edition, publication, year, ISBN (10 digits), language, subject, and status (available or on loan)
 A journal has a title, publication, year, ISSN (8 digits), language, subject, and status.
 A DVD has a title, authors, publication, year, language, subject, and status.
 A member has full name, ID (a driver’s license number or a passport number), phone, email, address, expired date (same as the expired date of the ID provided), and status (active or expired).
@@ -60,6 +60,7 @@ A member has full name, ID (a driver’s license number or a passport number), p
 
 - Validation does not work when updating member and items.
 - The scanner buffer does not properly clear when the user spam enter
+- Application does not accept ISBN with 13 digits.
 
 # 6. ACKNOWLEDGEMENT.
 
