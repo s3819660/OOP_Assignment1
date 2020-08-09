@@ -16,6 +16,7 @@ Last modified: 09/08/2020
   
 
 1. INTRODUCTION
+
 QuickLib is an applicant which interacts with its user in this case the librarians by Command Line Interface.
 The application is implemented to manage library items and members. An item can either be a book, a journal or a DVD.
 A book has a title, authors, edition, publication, year, ISBN (13 or 10 digits), language, subject, and status (available or on loan)
@@ -24,6 +25,7 @@ A DVD has a title, authors, publication, year, language, subject, and status.
 A member has full name, ID (a driver’s license number or a passport number), phone, email, address, expired date (same as the expired date of the ID provided), and status (active or expired).
 
 2. FEATURES
+
 The main functions of this simple applications are listed below:
 - Search items by keywords
 - Add new item
@@ -36,18 +38,29 @@ The main functions of this simple applications are listed below:
 - Save data
 - Quit
 
+Additional feature:
+ - Validation of entries upon input the data to the program.
+ - Pagination
+ - Press enter to exit to menu
+
 3. DESIGN
 - Each item object is a book/journal/DVD with multiple copies.
-
+- Item object is the super class of Book, DVD, Journal class
+- Member object also stored the borrow information: Borrow Items and Borrow date
+- The Model are set to the controller - view: Member model linked to MemberList, Item linked to ItemList
 
 4. INSTALLATION
+
 - InteliJ IDEA Ultimate
 - Java 11
 
 5. KNOWN BUGS
+
 - Validation does not work when updating member and items.
+- The scanner buffer does not properly clear when the user spam enter
 
 6. ACKNOWLEDGEMENT.
+
 - I would like to thank Dr. Tran Ngoc Quang who have provided me with valuable support and guidance in the completion of this project.
 - course Object-Oriented Programming, the lectures.
 - javatpoint, "Java instanceof", Available at: https://www.javatpoint.com/downcasting-with-instanceof-operator
