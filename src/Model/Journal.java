@@ -23,16 +23,14 @@ public class Journal extends Item implements Serializable {
 
     @Override
     public String toString() {
-        return "Model.Journal{" + "ID = " + ID +
-                " ISSN='" + ISSN + '\'' +
-                ", type=" + type +
-                ", title='" + title + '\'' +
-                ", publication='" + publication + '\'' +
-                ", year=" + year +
-                ", language='" + language + '\'' +
-                ", subject='" + subject + '\'' +
-                ", available=" + available +
-                ", onLoan=" + onLoan +
-                '}';
+        return "[" + type + "]" + " item ID: " + ID +
+                "\t-\tTilte: " + title +
+                "\t-\tYear: " + year +
+                "\t-\tISSN: " + ISSN +
+                "\nPublication: " + publication +
+                "\t-\tLanguage: " + language +
+                "\nSubject: " + subject +
+                "\nAvailable copies: " + available +
+                "\t-\tOn-loan copies: " + onLoan;
     }
 }

@@ -22,16 +22,14 @@ public class DVD extends Item implements Serializable {
 
     @Override
     public String toString() {
-        return "Model.DVD{" + "ID = " + ID +
-                " authors='" + authors + '\'' +
-                ", type=" + type +
-                ", title='" + title + '\'' +
-                ", publication='" + publication + '\'' +
-                ", year=" + year +
-                ", language='" + language + '\'' +
-                ", subject='" + subject + '\'' +
-                ", available=" + available +
-                ", onLoan=" + onLoan +
-                '}';
+        return "[" + type + "]" + " item ID: " + ID +
+                "\t-\tTitle: " + title +
+                "\t-\tYear: " + year +
+                "\nAuthors: " + authors +
+                "\t-\tPublication: " + publication +
+                "\t-\tLanguage: " + language +
+                "\nSubject: " + subject +
+                "\nAvailable copies: " + available +
+                "\t-\tOn-loan copies: " + onLoan;
     }
 }

@@ -12,7 +12,7 @@ public class ItemList {
 
     public static void searchItem(Scanner scanner) {
         System.out.print("Enter keyword(s): ");
-        String searchInput = scanner.nextLine().trim();
+        String searchInput = scanner.nextLine().trim().toLowerCase();
 
         // initialize 3 ArrayList for Book, Journal and DVD
         ArrayList<Book> bList = new ArrayList<>();
@@ -29,7 +29,6 @@ public class ItemList {
                 dList.add((DVD) item);
             }
         }
-
         // If the keywords are empty, display all items
         if (searchInput.isEmpty()) {
             printBookList(bList);
@@ -79,30 +78,21 @@ public class ItemList {
 
 
     public static void printBookList(ArrayList<Book> bList) {
-        System.out.println("----------------------------BOOK---------------------------------");
-        System.out.println("\tID\t\t\tTitle\t\t\tPublication\t\t\tYear\t\t\tLanguage\t\t\t\t\t\t\tSubject\t\t\t\t\t\t\t" +
-                "Copies\t\tAuthors\t\tEdition\t\tISBN");
-        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("BOOK LIST");
         for (Book book : bList) {
             System.out.println(book);
         }
     }
 
     public static void printJournalList(ArrayList<Journal> jList) {
-        System.out.println("---------------------------------JOURNAL-------------------------------------------");
-        System.out.println("\tID\t\t\tTitle\t\t\tPublication\t\t\tYear\t\t\tLanguage\t\t\t\t\t\t\tSubject\t\t\t\t\t\t\t" +
-                "Copies\t\tISSN");
-        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("JOURNAL LIST");
         for (Journal journal : jList) {
             System.out.println(journal);
         }
     }
 
     public static void printDVDList(ArrayList<DVD> dList) {
-        System.out.println("----------------------------------------DVD------------------------------------------");
-        System.out.println("\tID\t\t\tTitle\t\t\tPublication\t\t\tYear\t\t\tLanguage\t\t\t\t\t\t\tSubject\t\t\t\t\t\t\t" +
-                "Copies\t\t\t\t\t\tAuthors\t\t\t\t\t\t");
-        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("DVD LIST");
         for (DVD dvd : dList) {
             System.out.println(dvd);
         }
@@ -305,14 +295,15 @@ public class ItemList {
 
     public static void borrowItem(Scanner scanner) {
         System.out.println("Enter member ID: ");
-        int memID = Verification.IDVerify(scanner, MemberList.getMemberListSize());
+        String memID = Verification.memberIDVerify(scanner);
+        int memIndex = MemberList.getMemberIndex(memID);
 
         System.out.println("Enter item ID: ");
-        int itemID = Verification.IDVerify(scanner, itemList.size());
+        int itemID = Verification.itemIDVerify(scanner, itemList.size());
 
         switch (itemList.get(itemID).getStatus()) {
             case "available":
-                MemberList.borrow(memID, itemID);
+                MemberList.borrow(memIndex, itemID);
                 itemList.get(itemID).setOnLoan(true);
                 break;
             case "unavailable":
@@ -323,12 +314,13 @@ public class ItemList {
 
     public static void returnItem(Scanner scanner) {
         System.out.println("Enter member ID: ");
-        int memID = scanner.nextInt();
+        String memID = Verification.memberIDVerify(scanner);
+        int memIndex = MemberList.getMemberIndex(memID);
 
         System.out.println("Enter item ID: ");
-        int itemID = scanner.nextInt();
+        int itemID = Verification.itemIDVerify(scanner, itemList.size());
 
-        if (MemberList.returnItem(scanner, memID, itemID, itemList.get(itemID).getType())) {
+        if (MemberList.returnItem(scanner, memIndex, itemID, itemList.get(itemID).getType())) {
             itemList.get(itemID).setOnLoan(false);
         }
     }

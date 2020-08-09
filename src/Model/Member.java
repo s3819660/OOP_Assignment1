@@ -1,28 +1,28 @@
 package Model;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class Member implements Serializable {
-    private int ID;
+    private int index;
+    private String ID;
+    private Date expireDate;
     private String name;
     private String phone;
     private String email;
     private String address;
-    private Date expireDate;
     private String status = "active";
     private double record = 0;
 
-    private ArrayList<Integer> borrow = new ArrayList<>();
-    private ArrayList<Date> borrowDate = new ArrayList<>();
+    private ArrayList<Integer> borrow;
+    private ArrayList<Date> borrowDate;
 
-    public Member() {
-
-    }
-
-    public Member(int ID, String name, String phone, String email, String address, Date expireDate, String status) {
+    public Member(int index, String name, String ID, Date expireDate, String phone, String email, String address, String status) {
+        this.index = index;
         this.ID = ID;
         this.name = name;
         this.phone = phone;
@@ -30,11 +30,20 @@ public class Member implements Serializable {
         this.address = address;
         this.expireDate = expireDate;
         this.status = status;
+        this.borrow = new ArrayList<>();
+        this.borrowDate = new ArrayList<>();
     }
 
-    // ID is immutable
-    public int getID() {
+    public String getID() {
         return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    public int getIndex() {
+        return index;
     }
 
     public String getName() {
@@ -106,33 +115,32 @@ public class Member implements Serializable {
         return borrowDate;
     }
 
-    public void setBorrowDate(ArrayList<Date> borrowDate) {
-        this.borrowDate = borrowDate;
-    }
-
     // There are 5 borrow items at max, therefore we should have a method to display them
     public String getBorrowItem() {
-        String str = "";
+        StringBuilder str = new StringBuilder();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         for (int i = 0; i < borrow.size(); i++) {
-            if (str.isEmpty()) {
-                str = "Item ID = " + (borrow.get(i)) + "\t-\tBorrow date:" + sdf.format(borrowDate.get(i)) + "\n";
-            } else str = str + ", Item ID = " + (borrow.get(i)) + "\t-\tBorrow date:" + sdf.format(borrowDate.get(i)) + "\n";
+            if (str.length() == 0) {
+                str = new StringBuilder("Item ID = " + (borrow.get(i)) + "\t-\tBorrow date:" + sdf.format(borrowDate.get(i)) + "\n");
+            } else str.append(", Item ID = ").append(borrow.get(i)).append("\t-\tBorrow date:").append(sdf.format(borrowDate.get(i))).append("\n");
         }
-        return str;
+        return str.toString();
     }
 
     @Override
     public String toString() {
-        return "ID = " + ID +
-                "\nName = " + name +
-                "\nPhone number = " + phone +
-                "\nEmail = " + email +
-                "\nAddress = " + address +
-                "\nExpireDate = " + expireDate +
-                "\nStatus= " + status +
-                "\nRecord = " + record +
-                "\nBorrow Items: " + getBorrowItem();
+        NumberFormat numberFormat = new DecimalFormat("#0.0");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        return "index = " + index +
+                "\nID: " + ID +
+                "\nName: " + name +
+                "\nPhone number: " + phone +
+                "\nEmail: " + email +
+                "\nAddress: " + address +
+                "\nExpire date: " + simpleDateFormat.format(expireDate) +
+                "\nStatus: " + status +
+                "\nRecord: " + numberFormat.format(record) +
+                "\nBorrow item IDs: " + getBorrowItem();
     }
 }
 

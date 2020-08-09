@@ -16,68 +16,102 @@ public class MemberList {
     public MemberList() {
     }
 
-    public static int getMemberListSize() {
-        return memberList.size();
+    public static ArrayList<Member> getMemberList() {
+        return memberList;
+    }
+
+    public static int getMemberIndex(String ID) {
+        for (int i = 0; i < memberList.size(); i++) {
+            if (memberList.get(i).getID().compareTo(ID) == 0)
+                return memberList.get(i).getIndex();
+        }
+        return -1;
     }
 
     public static void registerMember(Scanner scanner) {
-        String[] inputs = new String[6];
-        String[] prompts = {"name", "phone", "email", "address", "expire date in the form of dd/MM/yyyy", "status"};
+//        String[] inputs = new String[7];
 
-        for (int i = 0; i < 6; i++) {
-            System.out.println("Enter " + prompts[i]);
-            inputs[i] = scanner.nextLine();
+
+//        for (int i = 0; i < PROMPTS.length; i++) {
+//            System.out.println("Enter " + PROMPTS[i]);
+//            inputs[i] = scanner.nextLine();
+//        }
+        Date toDate = new Date();
+
+        System.out.println("Enter name: ");
+        String name = Verification.nameVerify(scanner);
+
+        System.out.println("Enter ID: ");
+        String ID = Verification.memberIDVerify(scanner);
+
+        System.out.println("Enter expire date: ");
+        Date date = Verification.dateVerify(scanner);
+
+        System.out.println("Enter phone: ");
+        String phone = Verification.phoneVerify(scanner);
+
+        System.out.println("Enter email: ");
+        String email = Verification.emailVerify(scanner);
+
+        System.out.println("Enter address: ");
+        String address = Verification.addressVerify(scanner);
+
+        String status = "active";
+        if (date.compareTo(toDate) < 0) {
+            status = "expired";
         }
 
-        Date expireDate = null;
-        try {
-            expireDate = new SimpleDateFormat("dd/MM/yyyy").parse(inputs[4]);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
 
-        Member newMember = new Member(memberList.size(), inputs[0], inputs[1], inputs[2], inputs[3], expireDate, inputs[5]);
+//        System.out.println("Enter ID status (active or expired): ");
+//        String status = Verification.statusVerify(scanner);
+
+//        Date expireDate = null;
+//        try {
+//            expireDate = new SimpleDateFormat("dd/MM/yyyy").parse(inputs[1]);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+
+//        Member newMember = new Member(memberList.size(), inputs[0], inputs[1], inputs[2], inputs[3], inputs[5], expireDate, inputs[6]);
+        Member newMember = new Member(memberList.size(), name, ID, date, phone, email, address, status);
         memberList.add(newMember);
     }
 
     public static void updateMember(Scanner scanner) {
-        Date toDay = new Date();
-        String[] prompts = {"name", "phone", "email", "address", "status"};
+        final String[] PROMPTS = {"ID", "expire date in the form of dd/MM/yyyy", "name", "phone", "email", "address"};
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
         System.out.println("Enter the member ID you would like to update: ");
-        int ID = scanner.nextInt();
-        scanner.nextLine(); // flush buffer
+        String ID = Verification.memberIDVerify(scanner);
 
-        Member member = memberList.get(ID);
+        int index = MemberList.getMemberIndex(ID);
+        Member member = memberList.get(index);
+        String dateStr = simpleDateFormat.format(member.getExpireDate());
         // initiate current info as default
-        String[] updates = {member.getName()
-                , member.getPhone()
-                , member.getEmail()
-                , member.getAddress()
-                , member.getStatus()};
-        //renew membership
-//        if (memberList.get(ID - 1).getExpireDate().compareTo(toDay) > 0) {
-//            System.out.println("Enter new expire date: ");
-//            String dateStr = scanner.nextLine();
-//            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-//            try {
-//                memberList.get(ID).setExpireDate(simpleDateFormat.parse(dateStr));
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-//        } else {
+        String[] updates = {member.getID(),
+                            dateStr,
+                            member.getName(),
+                            member.getPhone(),
+                            member.getEmail(),
+                            member.getAddress(),
+                            member.getStatus()};
+
         int check = 0;
-        for (int i = 0; i < 5; i++) {
-            System.out.println("Current " + prompts[i] + ": " + updates[i]);
-            System.out.println("Would you like to update current " + prompts[i] + "? y/n");
+        for (int i = 0; i < PROMPTS.length; i++) {
+            System.out.println("Current " + PROMPTS[i] + ": " + updates[i]);
+            System.out.println("Would you like to update current " + PROMPTS[i] + "? y/n");
             String opt = scanner.nextLine().toLowerCase();
             System.out.println(opt);
             while (true) {
                 switch (opt.charAt(0)) {
                     case 'y':
-                        System.out.print("Enter new " + prompts[i] + ": ");
-                        updates[i] = scanner.nextLine();
-                        System.out.println(updates[i]);
+                        System.out.print("Enter new " + PROMPTS[i] + ": ");
+                        if (i == 1) {
+                            date = Verification.dateVerify(scanner);
+                        } else {
+                            updates[i] = scanner.nextLine();
+                        }
                         check = 1;
                         break;
                     case 'n':
@@ -90,25 +124,27 @@ public class MemberList {
                     break;
             }
         }
+
         // update member info, cannot use member instance because it is just a clone
-        member.setName(updates[0]);
-        member.setPhone(updates[1]);
-        member.setEmail(updates[2]);
-        member.setAddress(updates[3]);
-        member.setStatus(updates[4]);
+        member.setID(updates[0]);
+        member.setExpireDate(date);
+        member.setName(updates[1]);
+        member.setPhone(updates[2]);
+        member.setEmail(updates[3]);
+        member.setAddress(updates[4]);
+        member.setStatus("active");
 
-        memberList.set(ID, member); // set memberList(ID - 1) identical as member instance
+        memberList.set(index, member); // set memberList(index) identical as member instance
     }
-//    }
 
-    public static void borrow(int memID, int itemID) {
-        if (memberList.get(memID).getBorrow().size() < 5) {
-            memberList.get(memID).setBorrow(itemID);
+    public static void borrow(int memIndex, int itemID) {
+        if (memberList.get(memIndex).getBorrow().size() < 5) {
+            memberList.get(memIndex).setBorrow(itemID);
         } else System.out.println("You have reached the borrow limit of 5 items.");
     }
 
-    public static boolean returnItem(Scanner scanner, int memID, int itemID, String type) {
-        ArrayList<Integer> arrayList = memberList.get(memID).getBorrow();
+    public static boolean returnItem(Scanner scanner, int memIndex, int itemID, String type) {
+        ArrayList<Integer> arrayList = memberList.get(memIndex).getBorrow();
         if (arrayList.contains(itemID)) {
             int i = arrayList.indexOf(itemID);
 
@@ -119,12 +155,12 @@ public class MemberList {
                 Date date1 = sdf.parse(scanner.nextLine());
                 LocalDate localDate1 = date1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-                int index = memberList.get(memID).getBorrow().indexOf(itemID);
-                System.out.println(memberList.get(memID).getBorrow().toString());
+                int index = memberList.get(memIndex).getBorrow().indexOf(itemID);
+                System.out.println(memberList.get(memIndex).getBorrow().toString());
                 System.out.println("itemID = " + (itemID));
                 System.out.println("index" + index);
-                System.out.println("length = " + memberList.get(memID).getBorrow().size());
-                Date date2 = memberList.get(memID).getBorrowDate().get(index);
+                System.out.println("length = " + memberList.get(memIndex).getBorrow().size());
+                Date date2 = memberList.get(memIndex).getBorrowDate().get(index);
                 LocalDate localDate2 = date2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 // calculate numbers of days between borrow and return date
                 int days = (int) (ChronoUnit.DAYS.between(localDate2, localDate1));
@@ -135,8 +171,8 @@ public class MemberList {
                         if (days > 14) {
                             double lateFee = Math.abs(days - 14) * 0.1;
                             System.out.println("late fee = " + lateFee);
-                            System.out.println("expected: " + (memberList.get(memID).getRecord() + lateFee));
-                            memberList.get(memID).setRecord(memberList.get(memID).getRecord() + lateFee);
+                            System.out.println("expected: " + (memberList.get(memIndex).getRecord() + lateFee));
+                            memberList.get(memIndex).setRecord(memberList.get(memIndex).getRecord() + lateFee);
                         }
                         break;
                     case "Journal":
@@ -144,12 +180,12 @@ public class MemberList {
                         if (days > 7) {
                             double lateFee = Math.abs(days - 7) * 0.1;
                             System.out.println("late fee = " + lateFee);
-                            memberList.get(memID).setRecord(memberList.get(memID).getRecord() + lateFee);
+                            memberList.get(memIndex).setRecord(memberList.get(memIndex).getRecord() + lateFee);
                         }
                         break;
                 }
-                memberList.get(memID).getBorrow().remove(i);
-                memberList.get(memID).getBorrowDate().remove(i);
+                memberList.get(memIndex).getBorrow().remove(i);
+                memberList.get(memIndex).getBorrowDate().remove(i);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -160,7 +196,6 @@ public class MemberList {
             return false;
         }
     }
-
 
     public static void searchMember(Scanner scanner) {
         System.out.print("Enter keyword(s): ");
@@ -180,7 +215,7 @@ public class MemberList {
 
         // If the keywords are empty, display all items
         if (searchInput.isEmpty()) {
-            printMemberList(memberList);
+            Paging.printMemberList(scanner, memberList);
         } else {
             ArrayList<Member> mList = new ArrayList<>();
             for (Member member : memberList) {
@@ -195,14 +230,7 @@ public class MemberList {
                     mList.add(member);
                 }
             }
-            printMemberList(mList);
-        }
-    }
-
-    public static void printMemberList(ArrayList<Member> list) {
-        for (Member member : list) {
-            System.out.println("Member" + member.getID());
-            System.out.println(member.toString());
+            Paging.printMemberList(scanner, mList);
         }
     }
 
@@ -215,11 +243,12 @@ public class MemberList {
 
             ois.close();
             fis.close();
+
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
-        printMemberList(memberList);
+        Paging.printMemberListPage(memberList);
     }
 
     public static void saveMember() {

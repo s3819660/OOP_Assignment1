@@ -45,18 +45,16 @@ public class Book extends Item implements Serializable {
 
     @Override
     public String toString() {
-        return "Model.Book{" + "ID = " + ID +
-                " authors='" + authors + '\'' +
-                ", edition=" + edition +
-                ", ISBN='" + ISBN + '\'' +
-                ", type=" + type +
-                ", title='" + title + '\'' +
-                ", publication='" + publication + '\'' +
-                ", year=" + year +
-                ", language='" + language + '\'' +
-                ", subject='" + subject + '\'' +
-                ", available=" + available +
-                ", onLoan=" + onLoan +
-                '}';
+        return "[" + type + "]" + " item ID: " + ID +
+                "\t-\tTitle: " + title +
+                "\t-\tEdition: " + edition +
+                "\t-\tYear: " + year +
+                "\t-\tISBN: " + ISBN +
+                "\nAuthors: " + authors +
+                "\t-\tPublication: " + publication +
+                "\t-\tLanguage: " + language +
+                "\nSubject: " + subject +
+                "\nAvailable copies: " + available +
+                "\t-\tOn-loan copies: " + onLoan;
     }
 }
