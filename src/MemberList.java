@@ -16,64 +16,35 @@ public class MemberList {
     public MemberList() {
     }
 
-    public static ArrayList<Member> getMemberList() {
-        return memberList;
-    }
-
     public static int getMemberIndex(String ID) {
-        for (int i = 0; i < memberList.size(); i++) {
-            if (memberList.get(i).getID().compareTo(ID) == 0)
-                return memberList.get(i).getIndex();
+        for (Member member : memberList) {
+            if (member.getID().compareTo(ID) == 0)
+                return member.getIndex();
         }
         return -1;
     }
 
     public static void registerMember(Scanner scanner) {
-//        String[] inputs = new String[7];
-
-
-//        for (int i = 0; i < PROMPTS.length; i++) {
-//            System.out.println("Enter " + PROMPTS[i]);
-//            inputs[i] = scanner.nextLine();
-//        }
-        Date toDate = new Date();
 
         System.out.println("Enter name: ");
-        String name = Verification.nameVerify(scanner);
+        String name = LibVerification.nameVerify(scanner);
 
         System.out.println("Enter ID: ");
-        String ID = Verification.memberIDVerify(scanner);
+        String ID = LibVerification.memberIDVerify(scanner);
 
         System.out.println("Enter expire date: ");
-        Date date = Verification.dateVerify(scanner);
+        Date date = LibVerification.dateVerify(scanner);
 
         System.out.println("Enter phone: ");
-        String phone = Verification.phoneVerify(scanner);
+        String phone = LibVerification.phoneVerify(scanner);
 
         System.out.println("Enter email: ");
-        String email = Verification.emailVerify(scanner);
+        String email = LibVerification.emailVerify(scanner);
 
         System.out.println("Enter address: ");
-        String address = Verification.addressVerify(scanner);
+        String address = LibVerification.addressVerify(scanner);
 
-        String status = "active";
-        if (date.compareTo(toDate) < 0) {
-            status = "expired";
-        }
-
-
-//        System.out.println("Enter ID status (active or expired): ");
-//        String status = Verification.statusVerify(scanner);
-
-//        Date expireDate = null;
-//        try {
-//            expireDate = new SimpleDateFormat("dd/MM/yyyy").parse(inputs[1]);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-
-//        Member newMember = new Member(memberList.size(), inputs[0], inputs[1], inputs[2], inputs[3], inputs[5], expireDate, inputs[6]);
-        Member newMember = new Member(memberList.size(), name, ID, date, phone, email, address, status);
+        Member newMember = new Member(memberList.size(), name, ID, date, phone, email, address, "active");
         memberList.add(newMember);
     }
 
@@ -83,7 +54,7 @@ public class MemberList {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
         System.out.println("Enter the member ID you would like to update: ");
-        String ID = Verification.memberIDVerify(scanner);
+        String ID = LibVerification.memberIDVerify(scanner);
 
         int index = MemberList.getMemberIndex(ID);
         Member member = memberList.get(index);
@@ -97,32 +68,27 @@ public class MemberList {
                             member.getAddress(),
                             member.getStatus()};
 
-        int check = 0;
         for (int i = 0; i < PROMPTS.length; i++) {
             System.out.println("Current " + PROMPTS[i] + ": " + updates[i]);
             System.out.println("Would you like to update current " + PROMPTS[i] + "? y/n");
-            String opt = scanner.nextLine().toLowerCase();
-            System.out.println(opt);
-            while (true) {
-                switch (opt.charAt(0)) {
-                    case 'y':
+            String opt;
+            do {
+                opt = scanner.nextLine().toLowerCase();
+                switch (opt) {
+                    case "y":
                         System.out.print("Enter new " + PROMPTS[i] + ": ");
                         if (i == 1) {
-                            date = Verification.dateVerify(scanner);
+                            date = LibVerification.dateVerify(scanner);
                         } else {
                             updates[i] = scanner.nextLine();
                         }
-                        check = 1;
                         break;
-                    case 'n':
-                        check = 2;
+                    case "n":
                         break;
                     default:
                         System.out.println("Invalid option. Please enter y or n: ");
                 }
-                if (check == 1 || check == 2)
-                    break;
-            }
+            } while (!opt.equals("y") && !opt.equals("n"));
         }
 
         // update member info, cannot use member instance because it is just a clone
@@ -204,7 +170,7 @@ public class MemberList {
         // Compare date keyword
         // check if the input matches the date format
         Date date = null;
-        if (searchInput.matches("^\\d{2}\\/\\d{2}\\/\\d{4}$")) {
+        if (searchInput.matches("^\\d{2}/\\d{2}/\\d{4}$")) {
             try {
                 // convert String date to Date object
                 date = new SimpleDateFormat("dd/MM/yyyy").parse(searchInput);
@@ -245,7 +211,7 @@ public class MemberList {
             fis.close();
 
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("Save file does not exit, create new file");
         }
 
         Paging.printMemberListPage(memberList);

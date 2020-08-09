@@ -3,6 +3,7 @@ import Model.*;
 import java.util.Scanner;
 
 public class QuickLib {
+
     public Book addBook(int ID) {
         Scanner scanner = new Scanner(System.in);
         String authors;
@@ -17,11 +18,12 @@ public class QuickLib {
         edition = scanner.nextLine();
 
         System.out.println("Enter ISBN: ");
-        ISBN = Verification.ISBNVerify(scanner);
+        ISBN = LibVerification.ISBNVerify(scanner);
 
         return new Book(ID, "Book", itemField[0], itemField[1], itemField[2], itemField[3], itemField[4],
                 Integer.parseInt(itemField[5]), authors, edition, ISBN);
     }
+
 
     public Journal addJournal(int ID) {
         Scanner scanner = new Scanner(System.in);
@@ -29,7 +31,7 @@ public class QuickLib {
         String[] itemField = Item.inputItem();
 
         System.out.println("Enter ISSN: ");
-        ISSN = Verification.ISSNVerify(scanner);
+        ISSN = LibVerification.ISSNVerify(scanner);
 
         return new Journal(ID, "Journal", itemField[0], itemField[1], itemField[2], itemField[3],
                 itemField[4], Integer.parseInt(itemField[5]), ISSN);

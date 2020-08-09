@@ -14,87 +14,47 @@ public class ItemList {
         System.out.print("Enter keyword(s): ");
         String searchInput = scanner.nextLine().trim().toLowerCase();
 
-        // initialize 3 ArrayList for Book, Journal and DVD
-        ArrayList<Book> bList = new ArrayList<>();
-        ArrayList<Journal> jList = new ArrayList<>();
-        ArrayList<DVD> dList = new ArrayList<>();
-        for (Item item : itemList) {
-            if (item instanceof Book) {
-                bList.add((Book) item);
-            }
-            if (item instanceof Journal) {
-                jList.add((Journal) item);
-            }
-            if (item instanceof DVD) {
-                dList.add((DVD) item);
-            }
-        }
-        // If the keywords are empty, display all items
+        ArrayList<Item> iList = new ArrayList<>();
+
         if (searchInput.isEmpty()) {
-            printBookList(bList);
-            printJournalList(jList);
-            printDVDList(dList);
+            Paging.printItemList(scanner, itemList);
         } else {
-            ArrayList<Book> bsList = new ArrayList<>();
-            for (Book book : bList) {
-                if (book.getTitle().toLowerCase().contains(searchInput) ||
-                        book.getPublication().toLowerCase().contains(searchInput) ||
-                        book.getYear().toLowerCase().contains(searchInput) ||
-                        book.getLanguage().toLowerCase().contains(searchInput) ||
-                        book.getSubject().toLowerCase().contains(searchInput) ||
-                        book.getISBN().toLowerCase().contains(searchInput)) {
-                    bsList.add(book);
+            for (Item item : itemList) {
+                if (item instanceof Book) {
+                    Book book = (Book) item;
+                    if (book.getTitle().toLowerCase().contains(searchInput) ||
+                            book.getPublication().toLowerCase().contains(searchInput) ||
+                            book.getYear().toLowerCase().contains(searchInput) ||
+                            book.getLanguage().toLowerCase().contains(searchInput) ||
+                            book.getSubject().toLowerCase().contains(searchInput) ||
+                            book.getISBN().toLowerCase().contains(searchInput)) {
+                        iList.add(book);
+                    }
+                }
+                if (item instanceof Journal) {
+                    Journal journal = (Journal) item;
+                    if (journal.getTitle().toLowerCase().contains(searchInput) ||
+                            journal.getPublication().toLowerCase().contains(searchInput) ||
+                            journal.getYear().toLowerCase().contains(searchInput) ||
+                            journal.getLanguage().toLowerCase().contains(searchInput) ||
+                            journal.getSubject().toLowerCase().contains(searchInput) ||
+                            journal.getISSN().toLowerCase().contains(searchInput)) {
+                        iList.add(journal);
+                    }
+                }
+                if (item instanceof DVD) {
+                    DVD dvd = (DVD) item;
+                    if (dvd.getTitle().toLowerCase().contains(searchInput) ||
+                            dvd.getPublication().toLowerCase().contains(searchInput) ||
+                            dvd.getYear().toLowerCase().contains(searchInput) ||
+                            dvd.getLanguage().toLowerCase().contains(searchInput) ||
+                            dvd.getSubject().toLowerCase().contains(searchInput) ||
+                            dvd.getAuthors().toLowerCase().contains(searchInput)) {
+                        iList.add(dvd);
+                    }
                 }
             }
-            printBookList(bsList);
-
-            ArrayList<Journal> jsList = new ArrayList<>();
-            for (Journal journal : jList) {
-                if (journal.getTitle().toLowerCase().contains(searchInput) ||
-                        journal.getPublication().toLowerCase().contains(searchInput) ||
-                        journal.getYear().toLowerCase().contains(searchInput) ||
-                        journal.getLanguage().toLowerCase().contains(searchInput) ||
-                        journal.getSubject().toLowerCase().contains(searchInput) ||
-                        journal.getISSN().toLowerCase().contains(searchInput)) {
-                    jsList.add(journal);
-                }
-            }
-            printJournalList(jsList);
-
-            ArrayList<DVD> dsList = new ArrayList<>();
-            for (DVD dvd : dList) {
-                if (dvd.getTitle().toLowerCase().contains(searchInput) ||
-                        dvd.getPublication().toLowerCase().contains(searchInput) ||
-                        dvd.getYear().toLowerCase().contains(searchInput) ||
-                        dvd.getLanguage().toLowerCase().contains(searchInput) ||
-                        dvd.getSubject().toLowerCase().contains(searchInput) ||
-                        dvd.getAuthors().toLowerCase().contains(searchInput)) {
-                    dsList.add(dvd);
-                }
-            }
-            printDVDList(dsList);
-        }
-    }
-
-
-    public static void printBookList(ArrayList<Book> bList) {
-        System.out.println("BOOK LIST");
-        for (Book book : bList) {
-            System.out.println(book);
-        }
-    }
-
-    public static void printJournalList(ArrayList<Journal> jList) {
-        System.out.println("JOURNAL LIST");
-        for (Journal journal : jList) {
-            System.out.println(journal);
-        }
-    }
-
-    public static void printDVDList(ArrayList<DVD> dList) {
-        System.out.println("DVD LIST");
-        for (DVD dvd : dList) {
-            System.out.println(dvd);
+            Paging.printItemList(scanner, iList);
         }
     }
 
@@ -123,13 +83,37 @@ public class ItemList {
         } while (input == 0);
     }
 
+    public static String[] updateItems(Scanner scanner, String[] prompts, String[] updates) {
+        for (int i = 0; i < prompts.length; i++) {
+            System.out.println("Current " + prompts[i] + ": " + updates[i]);
+            System.out.println("Would you like to update current " + prompts[i] + "? y/n");
+
+            String opt;
+            do {
+                opt = scanner.nextLine().toLowerCase();
+                switch (opt) {
+                    case "y":
+                        System.out.print("Enter new " + prompts[i] + ": ");
+                        updates[i] = scanner.nextLine();
+                        break;
+                    case "n":
+                        break;
+                    default:
+                        System.out.println("Invalid option. Please enter y or n: ");
+                }
+            } while (!opt.equals("y") && !opt.equals("n"));
+        }
+        return updates;
+    }
+
     public static void updateBook(Scanner scanner, int ID) {
         String[] prompts = {"title", "publication", "year", "language", "subject", "amount of available copies",
                 "authors", "edition", "ISBN"};
 
         Book book = (Book) itemList.get(ID);
-        ///inialize current info as default
-        String[] updates = {book.getTitle(),
+        ///initialize current info as default
+
+        String[] updates = updateItems(scanner, prompts, new String[]{book.getTitle(),
                 book.getPublication(),
                 book.getYear(),
                 book.getLanguage(),
@@ -137,32 +121,7 @@ public class ItemList {
                 Integer.toString(book.getAvailable()),
                 book.getAuthors(),
                 book.getEdition(),
-                book.getISBN()};
-
-        int check = 0;
-        for (int i = 0; i < prompts.length; i++) {
-            System.out.println("Current " + prompts[i] + ": " + updates[i]);
-            System.out.println("Would you like to update current " + prompts[i] + "? y/n");
-            String opt = scanner.nextLine().toLowerCase();
-
-            while (true) {
-                switch (opt.charAt(0)) {
-                    case 'y':
-                        System.out.print("Enter new " + prompts[i] + ": ");
-                        updates[i] = scanner.nextLine();
-                        System.out.println(updates[i]);
-                        check = 1;
-                        break;
-                    case 'n':
-                        check = 2;
-                        break;
-                    default:
-                        System.out.println("Invalid option. Please enter y or n: ");
-                }
-                if (check == 1 || check == 2)
-                    break;
-            }
-        }
+                book.getISBN()});
         // Update Item info, cannot use item instance because it is just a clone
         book.setTitle(updates[0]);
         book.setPublication(updates[1]);
@@ -182,39 +141,15 @@ public class ItemList {
                 "ISSN"};
 
         Journal journal = (Journal) itemList.get(ID);
-        ///inialize current info as default
-        String[] updates = {journal.getTitle(),
+        ///initialize current info as default
+
+        String[] updates = updateItems(scanner, prompts, new String[]{journal.getTitle(),
                 journal.getPublication(),
                 journal.getYear(),
                 journal.getLanguage(),
                 journal.getSubject(),
                 Integer.toString(journal.getAvailable()),
-                journal.getISSN()};
-
-        int check = 0;
-        for (int i = 0; i < prompts.length; i++) {
-            System.out.println("Current " + prompts[i] + ": " + updates[i]);
-            System.out.println("Would you like to update current " + prompts[i] + "? y/n");
-            String opt = scanner.nextLine().toLowerCase();
-
-            while (true) {
-                switch (opt.charAt(0)) {
-                    case 'y':
-                        System.out.print("Enter new " + prompts[i] + ": ");
-                        updates[i] = scanner.nextLine();
-                        System.out.println(updates[i]);
-                        check = 1;
-                        break;
-                    case 'n':
-                        check = 2;
-                        break;
-                    default:
-                        System.out.println("Invalid option. Please enter y or n: ");
-                }
-                if (check == 1 || check == 2)
-                    break;
-            }
-        }
+                journal.getISSN()});
         // Update Item info, cannot use item instance because it is just a clone
         journal.setTitle(updates[0]);
         journal.setPublication(updates[1]);
@@ -232,39 +167,14 @@ public class ItemList {
                 "authors"};
 
         DVD dvd = (DVD) itemList.get(ID);
-        ///inialize current info as default
-        String[] updates = {dvd.getTitle(),
+        ///initialize current info as default
+        String[] updates = updateItems(scanner, prompts, new String[]{dvd.getTitle(),
                 dvd.getPublication(),
                 dvd.getYear(),
                 dvd.getLanguage(),
                 dvd.getSubject(),
                 Integer.toString(dvd.getAvailable()),
-                dvd.getAuthors()};
-
-        int check = 0;
-        for (int i = 0; i < prompts.length; i++) {
-            System.out.println("Current " + prompts[i] + ": " + updates[i]);
-            System.out.println("Would you like to update current " + prompts[i] + "? y/n");
-            String opt = scanner.nextLine().toLowerCase();
-
-            while (true) {
-                switch (opt.charAt(0)) {
-                    case 'y':
-                        System.out.print("Enter new " + prompts[i] + ": ");
-                        updates[i] = scanner.nextLine();
-                        System.out.println(updates[i]);
-                        check = 1;
-                        break;
-                    case 'n':
-                        check = 2;
-                        break;
-                    default:
-                        System.out.println("Invalid option. Please enter y or n: ");
-                }
-                if (check == 1 || check == 2)
-                    break;
-            }
-        }
+                dvd.getAuthors()});
         // Update Item info, cannot use item instance because it is just a clone
         dvd.setTitle(updates[0]);
         dvd.setPublication(updates[1]);
@@ -295,11 +205,11 @@ public class ItemList {
 
     public static void borrowItem(Scanner scanner) {
         System.out.println("Enter member ID: ");
-        String memID = Verification.memberIDVerify(scanner);
+        String memID = LibVerification.memberIDVerify(scanner);
         int memIndex = MemberList.getMemberIndex(memID);
 
         System.out.println("Enter item ID: ");
-        int itemID = Verification.itemIDVerify(scanner, itemList.size());
+        int itemID = LibVerification.itemIDVerify(scanner, itemList.size());
 
         switch (itemList.get(itemID).getStatus()) {
             case "available":
@@ -314,11 +224,11 @@ public class ItemList {
 
     public static void returnItem(Scanner scanner) {
         System.out.println("Enter member ID: ");
-        String memID = Verification.memberIDVerify(scanner);
+        String memID = LibVerification.memberIDVerify(scanner);
         int memIndex = MemberList.getMemberIndex(memID);
 
         System.out.println("Enter item ID: ");
-        int itemID = Verification.itemIDVerify(scanner, itemList.size());
+        int itemID = LibVerification.itemIDVerify(scanner, itemList.size());
 
         if (MemberList.returnItem(scanner, memIndex, itemID, itemList.get(itemID).getType())) {
             itemList.get(itemID).setOnLoan(false);
@@ -335,7 +245,7 @@ public class ItemList {
             ois.close();
             fis.close();
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("Save file does not exit, create new file");
         }
 
         for (Item item : itemList) {

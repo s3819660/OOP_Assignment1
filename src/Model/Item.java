@@ -28,16 +28,8 @@ public abstract class Item implements Serializable {
         this.available = available;
     }
 
-    public int getID() {
-        return ID;
-    }
-
     public String getType() {
         return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getTitle() {
@@ -84,10 +76,6 @@ public abstract class Item implements Serializable {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public int getAvailable() {
         return available;
     }
@@ -99,9 +87,6 @@ public abstract class Item implements Serializable {
         } else this.status = "available";
     }
 
-    public int getOnLoan() {
-        return onLoan;
-    }
     public void setOnLoan(boolean bool) {
         if (bool) {
             this.onLoan = this.onLoan + 1;
@@ -120,6 +105,19 @@ public abstract class Item implements Serializable {
         for (int i = 0; i < 6; i++) {
             System.out.println("Enter " + prompts[i]);
             inputs[i] = scanner.nextLine();
+            if (i == 2 || i == 5) {
+                while (true) {
+                    try {
+                        int y = Integer.parseInt(inputs[i]);
+                        if (y > 2021 && i == 2) {
+                            System.out.println("Invalid year, year exceeded expectation. Please enter again: ");
+                        } else break;
+                    } catch (Exception e) {
+                        System.out.println("Must be number. Please enter again: ");
+                    }
+                    inputs[i] = scanner.nextLine();
+                }
+            }
         }
         return inputs;
     }

@@ -5,7 +5,8 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Verification {
+public class LibVerification {
+
     public static int itemIDVerify(Scanner scanner, int size) {
         String input = scanner.nextLine();
         while (true) {
@@ -27,28 +28,27 @@ public class Verification {
         while (true) {
             try {
                 if (!Pattern.matches("C\\d{7}", ID.toUpperCase())) {
-                    System.out.println("Invalid ID. Please enter again: ");
+                    System.out.println("Invalid passport Id format. Please enter again: ");
                     ID = scanner.nextLine();
 
                 } else return ID.toUpperCase();
             } catch (Exception e) {
-                System.out.println("Invalid ID. Please enter again: ");
+                System.out.println("Invalid passport Id format. Please enter again: ");
             }
         }
     }
 
     public static String nameVerify(Scanner scanner) {
         String name = scanner.nextLine();
-
         while (true) {
             try {
-                if (!Pattern.matches("^[a-zA-Z]+(\\s[a-zA-Z]+)+$", name)) {
-                    System.out.println("Invalid ID. Please enter again: ");
+                if (!Pattern.matches("^[a-zA-Z]+(\\s[a-zA-Z]+)*$", name)) {
+                    System.out.println("Invalid name, name only contains letter. Please enter again: ");
                     name = scanner.nextLine();
 
                 } else return name;
             } catch (Exception e) {
-                System.out.println("Invalid name, name only contain letter, Please enter again: ");
+                System.out.println("Invalid name, name only contains letter. Please enter again: ");
             }
         }
     }
@@ -62,7 +62,7 @@ public class Verification {
             if (matcher.matches()) {
                 return phone;
             } else {
-                System.out.println("Invalid phone number. Please enter again: ");
+                System.out.println("Invalid phone number format. Please enter again: ");
                 phone = scanner.nextLine();
             }
         }
@@ -77,7 +77,7 @@ public class Verification {
             if (matcher.matches()) {
                 return email;
             } else {
-                System.out.println("Invalid email. Please enter again: ");
+                System.out.println("Invalid email format. Please enter again: ");
                 email = scanner.nextLine();
             }
         }
@@ -85,14 +85,14 @@ public class Verification {
 
     public static String addressVerify(Scanner scanner) {
         String email = scanner.nextLine();
-        String regex = "^((\\w+(\\/\\w+)*)(\\,)*\\s)+(\\w+)(\\.\\w+)*$";
+        String regex = "^((\\w+(/\\w+)*)(,)*\\s)+(\\w+)(\\.\\w+)*$";
         Pattern pattern = Pattern.compile(regex);
         while (true) {
             Matcher matcher = pattern.matcher(email);
             if (matcher.matches()) {
                 return email;
             } else {
-                System.out.println("Invalid address. Please enter again: ");
+                System.out.println("Invalid address format, must have 2 words. Please enter again: ");
                 email = scanner.nextLine();
             }
         }
@@ -101,24 +101,13 @@ public class Verification {
     public static String ISBNVerify(Scanner scanner) {
         String ISBN = scanner.nextLine().replaceAll("-", "");
         while (true) {
-//            // check is ISBN contains digit
-//            try {
-//                Integer.parseInt(ISBN);
-//            } catch (Exception e) {
-//                System.out.println("Invalid ISBN. Please enter again: ");
-//                continue;
-//            }
-            //check if it contains 10 digit
-            if (ISBN.length() != 10) {
-                System.out.println("Invalid ISBN. Please enter again: ");
-                ISBN = scanner.nextLine();
-                continue;
-            }
-            char lastChar = ISBN.charAt(9);
             
             // Check the last digit
-            if ((lastChar < 48 && lastChar > 57) && lastChar != 'X') {
-                System.out.println("Invalid ISBN. Please enter again: ");
+            Pattern pattern = Pattern.compile("^\\d{9}(\\d|X)$");
+            Matcher matcher = pattern.matcher(ISBN);
+            if (!matcher.matches()) {
+                System.out.println("Invalid ISBN, valid ISBN contains only 10 numbers or 9 numbers and last digit X. " +
+                                    "Please enter again: ");
                 ISBN = scanner.nextLine();
                 continue;
             }
@@ -127,7 +116,7 @@ public class Verification {
             int sum = 0;
             int num;
             for (int i = 0; i < ISBN.length(); i++) {
-                if (i == 0 && ISBN.charAt(i) == 'X') {
+                if (i == 9 && ISBN.charAt(i) == 'X') {
                     sum = sum + 10;
                     break;
                 }
@@ -138,7 +127,7 @@ public class Verification {
             if (sum % 11 == 0) {
                 return ISBN;
             } else {
-                System.out.println("Invalid ISBN. Please enter again: ");
+                System.out.println("Invalid ISBN, sum of digit must mod 11 = 0. Please enter again: ");
                 ISBN = scanner.nextLine();
             }
         }
@@ -151,7 +140,7 @@ public class Verification {
         while (true) {
             Matcher matcher = pattern.matcher(ISSN);
             if (!matcher.matches()) {
-                System.out.println("Invalid ISSN. Please enter again: ");
+                System.out.println("Invalid ISSN, format, must be ####-####, eg: 0000-0000. Please enter again: ");
                 ISSN = scanner.nextLine();
             }
 
@@ -175,34 +164,18 @@ public class Verification {
             if (sum % 11 == 0 || 11 - (sum % 11) == (ISSN.charAt(8) - 48)) {
                 return ISSN;
             } else {
-                System.out.println("11 - (sum % 11) = " + (11 - (sum % 11)) + " sum % 11 = " + sum % 11);
-                System.out.println("ISSN.charAt(7) = " + ISSN.charAt(8));
-                System.out.println("ISSN.charAt(7) - 48 = " + (ISSN.charAt(8) - 48));
-                System.out.println("Invalid ISSN. Please enter again: ");
+                System.out.println("Invalid ISSN, must follow the formula. Please enter again: ");
                 ISSN = scanner.nextLine();
             }
         }
     }
 
-//    public static String statusVerify(Scanner scanner) {
-//        String status = scanner.nextLine();
-//        while (true) {
-//            if (status.toLowerCase().equals("active") || status.toLowerCase().equals("expired")) {
-//                return status.toLowerCase();
-//            } else {
-//                System.out.println("Invalid status. Please enter active or expired");
-//                status = scanner.nextLine();
-//            }
-//        }
-//    }
-
     public static Date dateVerify(Scanner scanner) {
         while (true) {
             try {
-                Date date = new SimpleDateFormat("dd/MM/yyyy").parse(scanner.nextLine());
-                return date;
+                return new SimpleDateFormat("dd/MM/yyyy").parse(scanner.nextLine());
             } catch (ParseException e) {
-                System.out.println("Invalid date. Please enter date with formal dd/MM/yyyy: ");
+                System.out.println("Invalid date. Please enter date with format dd/MM/yyyy: ");
             }
         }
     }
