@@ -27,32 +27,33 @@ A member has full name, ID (a driver’s license number or a passport number), p
 2. FEATURES
 
 The main functions of this simple applications are listed below:
-- Search items by keywords
-- Add new item
-- Update item info
-- Search members by keywords
-- Register new member
-- Update member info
-- Borrow items
-- Return items
-- Save data
-- Quit
+- Search items by keywords: Perform a search Item by keywords, it could be the keyword from any field of the item list
+- Add new item: Add new item to the list, can only be Book, Journal, and DVD
+- Update item info: Updating existing Item information, select the item ID to update it
+- Search members by keywords: Perform a search Member by keywords, it could be the keyword from any field of the member list 
+- Register new member: Register new member to the list
+- Update member info: Update current information of existing Member in the list, member can extend their expire date
+- Borrow items: Perform a borrow for a Member, only items which is in stock can be borrowed.
+- Return items: Return a borrowed item for a Member, if the return date is late, it will automatically calculate late fee for Member and add to their record.
+- Save data: Save all existing information
+- Quit: Save all existing information and exit program
 
 Additional feature:
- - Validation of entries upon input the data to the program.
- - Pagination
- - Press enter to exit to menu
+ - Validation of entries upon input the data to the program: Entries such as year, ISBN, ISSN is validated accordingly, wrong input will prompt user to input again
+ - Pagination: View 10 items/members per page, press n to next page, p to previous page
+ - Press enter to exit to menu: User press Enter to go back to menu rather than the application automatically back to menu after completing a task
 
 3. DESIGN
-- Each item object is a book/journal/DVD with multiple copies.
+- Each item object is a book/journal/DVD with multiple copies
 - Item object is the super class of Book, DVD, Journal class
 - Member object also stored the borrow information: Borrow Items and Borrow date
 - The Model are set to the controller - view: Member model linked to MemberList, Item linked to ItemList
+- The QuickLibUI will act as the main controller and main view
 
 4. INSTALLATION
 
 - InteliJ IDEA Ultimate
-- Java 11
+- Java JDK 11
 
 5. KNOWN BUGS
 
